@@ -33,55 +33,51 @@ def upload_resume():
 
         file.save(filepath)
 
+        # Extract resume text
         resume_text = extract_text_from_pdf(filepath)
+
+        # Read Job Description
         job_description = request.form["job_description"]
 
-        from matcher import extract_email, extract_phone, extract_skills
+        # Candidate Details
         email = extract_email(resume_text)
         phone = extract_phone(resume_text)
-        skills = extract_skills(resume_text)
+
+        # Extract Skills
+        resume_skills = extract_skills(resume_text)
         job_skills = extract_skills(job_description)
-        score, matched_skills, missing_skills = calculate_match_score(skills,job_skills)
 
-        return f"""
-<h1>Resume Analysis</h1>
+        # ATS Score
+        score, matched_skills, missing_skills = calculate_match_score(
+            resume_skills,
+            job_skills
+        )
 
-<h2>Email</h2>
-<p>{email}</p>
+        # Recommendations
+        recommendations = []
 
-<h2>Phone</h2>
-<p>{phone}</p>
+        if score < 80:
+            recommendations.append(
+                "Improve your resume by adding the missing technical skills."
+            )
 
-<hr>
+        for skill in missing_skills:
+            recommendations.append(
+                f"Consider learning {skill}."
+            )
 
-<h2>ATS Match Score</h2>
+        return render_template(
+            "result.html",
+            email=email,
+            phone=phone,
+            score=score,
+            matched_skills=matched_skills,
+            missing_skills=missing_skills,
+            recommendations=recommendations,
+        )
 
-<h1>{score}%</h1>
+    return "No file uploaded."
 
-<hr>
 
-<h2>Matched Skills</h2>
-
-<p>{matched_skills}</p>
-
-<hr>
-
-<h2>Missing Skills</h2>
-
-<p>{missing_skills}</p>
-
-<hr>
-
-<h2>Resume Skills</h2>
-
-<p>{skills}</p>
-
-<hr>
-
-<h2>Job Description Skills</h2>
-
-<p>{job_skills}</p>
-"""
-    
 if __name__ == "__main__":
     app.run(debug=True)
