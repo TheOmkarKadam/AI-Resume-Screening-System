@@ -1,0 +1,45 @@
+Python
+Java
+JavaScript
+TypeScript
+React
+Angular
+Node.js
+Flask
+Django
+HTML
+HTML5
+CSS
+CSS3
+SQL
+MySQL
+PostgreSQL
+MongoDB
+AWS
+Azure
+GCP
+Docker
+Kubernetes
+Linux
+Git
+GitHub
+REST API
+REST APIs
+GraphQL
+Machine Learning
+Deep Learning
+TensorFlow
+PyTorch
+OpenCV
+Pandas
+NumPy
+OOP
+Data Structures
+Algorithms
+CI/CD
+Jenkins
+Agile
+Scrum
+JIRA
+Unit Testing
+Microservices

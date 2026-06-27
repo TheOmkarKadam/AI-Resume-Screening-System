@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <title>AI Resume Screening System</title>
+
 </head>
+
 <body>
 
-    <h1>Upload Resume</h1>
+<h1>AI Resume Screening System</h1>
 
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="resume">
-        <button type="submit">Upload</button>
-    </form>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+
+    <h3>Upload Resume</h3>
+
+    <input type="file" name="resume">
+
+    <br><br>
+
+    <h3>Paste Job Description</h3>
+
+    <textarea
+        name="job_description"
+        rows="15"
+        cols="80"
+        placeholder="Paste Job Description Here"></textarea>
+
+    <br><br>
+
+    <button type="submit">
+
+        Analyze Resume
+
+    </button>
+
+</form>
 
 </body>
+
 </html>

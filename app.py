@@ -1,6 +1,11 @@
-from resume_parser import extract_text_from_pdf
-
 from flask import Flask, render_template, request
+from resume_parser import extract_text_from_pdf
+from matcher import (
+    extract_email,
+    extract_phone,
+    extract_skills,
+    calculate_match_score,
+)
 import os
 
 app = Flask(__name__)
@@ -29,33 +34,54 @@ def upload_resume():
         file.save(filepath)
 
         resume_text = extract_text_from_pdf(filepath)
+        job_description = request.form["job_description"]
 
         from matcher import extract_email, extract_phone, extract_skills
         email = extract_email(resume_text)
         phone = extract_phone(resume_text)
         skills = extract_skills(resume_text)
+        job_skills = extract_skills(job_description)
+        score, matched_skills, missing_skills = calculate_match_score(skills,job_skills)
 
         return f"""
-        <h1>Resume Analysis</h1>
+<h1>Resume Analysis</h1>
 
-        <h3>Email:</h3>
-        <p>{email}</p>
+<h2>Email</h2>
+<p>{email}</p>
 
-        <h3>Phone:</h3>
-        <p>{phone}</p>
+<h2>Phone</h2>
+<p>{phone}</p>
 
-        <h3>Skills:</h3>
-        <p>{", ".join(skills)}</p>
+<hr>
 
-        <h3>Resume Text:</h3>
+<h2>ATS Match Score</h2>
 
-        <pre>{resume_text}</pre>
-        """
+<h1>{score}%</h1>
 
-        return f"Resume uploaded successfully: {file.filename}"
+<hr>
 
-    return "No file uploaded"
+<h2>Matched Skills</h2>
 
+<p>{matched_skills}</p>
 
+<hr>
+
+<h2>Missing Skills</h2>
+
+<p>{missing_skills}</p>
+
+<hr>
+
+<h2>Resume Skills</h2>
+
+<p>{skills}</p>
+
+<hr>
+
+<h2>Job Description Skills</h2>
+
+<p>{job_skills}</p>
+"""
+    
 if __name__ == "__main__":
     app.run(debug=True)
